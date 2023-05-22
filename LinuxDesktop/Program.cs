@@ -3,6 +3,7 @@ using Gtk;
 using LinuxDesktop;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Util.Reflection.Expressions;
 
 Application.Init();
 
@@ -17,13 +18,12 @@ window.DeleteEvent += (o, e) =>
 };
 
 // Add the BlazorWebView
-var serviceProvider = new ServiceCollection()
+var service = new ServiceCollection()
     .AddBlazorWebViewOptions(new BlazorWebViewOptions()
     {
         RootComponent = typeof(App),
         HostPath = "wwwroot/index.html"
     })
-    .AddMasaBlazor()
     .AddLogging((lb) =>
     {
         lb.AddSimpleConsole(options =>
@@ -34,7 +34,10 @@ var serviceProvider = new ServiceCollection()
             options.TimestampFormat = "hh:mm:ss ";
         })
         .SetMinimumLevel(LogLevel.Information);
-    })
+    });
+
+service.AddMasaBlazor();
+var serviceProvider = service
     .BuildServiceProvider();
 var webView = new BlazorWebView(serviceProvider);
 window.Add(webView);
