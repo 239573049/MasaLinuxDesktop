@@ -1,4 +1,4 @@
-﻿using BlazorWebKit;
+using BlazorWebKit;
 using Gtk;
 using LinuxDesktop;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +23,7 @@ var serviceProvider = new ServiceCollection()
         RootComponent = typeof(App),
         HostPath = "wwwroot/index.html"
     })
+    .AddMasaBlazor()
     .AddLogging((lb) =>
     {
         lb.AddSimpleConsole(options =>
